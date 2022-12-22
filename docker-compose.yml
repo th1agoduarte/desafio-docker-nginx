@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: node
+      dockerfile: Dockerfile
+    container_name: desaifio-nginex-node
+    entrypoint: wait-for db:3306 -t 180 -- ./start.sh
+    volumes:
+      - ./node:/home/node/app
+    ports:
+      - "5000:5000"
+    networks: 
+      - node-network
+    tty: true
+    depends_on:
+      - db 
+
+  nginx:
+    build: 
+      context: nginx
+      dockerfile: Dockerfile
+    container_name: desafio-nginex
+    tty: true
+    ports:
+      - "8080:8080"
+    networks: 
+      - node-network
+    depends_on:
+      - app
+
+  db:
+    container_name: desafio-nginex-mysql
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    restart: always
+    tty: true
+    #volumes:
+    #  - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=nodedb
+    ports:
+      - "3306:3306"
+   
+    networks: 
+      - node-network
+  
+networks:
+  node-network:
+    driver: bridge
