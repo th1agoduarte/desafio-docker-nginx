@@ -10,7 +10,7 @@ services:
     volumes:
       - ./node:/home/node/app
     ports:
-      - "5000:5000"
+      - "3000:3000"
     networks: 
       - node-network
     tty: true
@@ -24,7 +24,7 @@ services:
     container_name: desafio-nginex
     tty: true
     ports:
-      - "8080:8080"
+      - "8080:80"
     networks: 
       - node-network
     depends_on:
