@@ -1,0 +1,3 @@
+# desafio-docker-nginx
+correção da Atividade conforme, orientação. 
+Feliz Natal...
